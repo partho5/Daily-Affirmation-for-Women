@@ -1,0 +1,682 @@
+{
+  "meta": {
+    "app": "Daily Affirmation for Women",
+    "audience": "Women in Western Europe",
+    "language": "en",
+    "version": "1.0",
+    "name_placeholder": "{name}",
+    "name_placeholder_note": "Replace with the user's first name. If no name is set, do not show sentences that contain the placeholder. Show a prompt asking the user to add a name. Never rewrite a sentence.",
+    "level_rules": {
+      "start_level": "gentle",
+      "onboarding_start_level": {
+        "I believe it": "medium",
+        "I want to believe it": "gentle",
+        "I doubt it": "gentle",
+        "skipped": "gentle"
+      },
+      "on_feels_true": "Show the next level up for this category.",
+      "on_not_yet": "Show the next level down for this category.",
+      "note": "Never show level names to the user. Never label the user as low or high self-esteem."
+    },
+    "user_added_sentence_hint": "Write something you can believe today.",
+    "ui_note_rules": [
+      "Say 'research found' or 'a study found'. Never say 'proven'.",
+      "Always name who was studied.",
+      "Use only the claim_ui text. Do not extend it.",
+      "Show no note for a category where research_note_id is null."
+    ],
+    "source_check_key": {
+      "abstract_read": "I read the abstract or study summary.",
+      "secondary_only": "I saw this only in a news or summary source. Check the primary paper before publishing."
+    },
+    "session": {
+      "standard_target_seconds": 150,
+      "max_sentences_per_session": 3,
+      "night_start_hour": 21,
+      "night_end_hour": 5,
+      "limited_category_min_days_between_suggestions": 3,
+      "no_fit_after_not_yet_in_a_row": 3,
+      "avoid_repeating_sentence_days": 7,
+      "answer_box_saved": false,
+      "note": "These numbers are design choices, not tested doses. Do not present them to users as research."
+    },
+    "session_modes": {
+      "standard": "Read, Check, Do, Close.",
+      "say_aloud": "Same as standard, but the Read screen asks the user to say the sentence out loud once, just before the event.",
+      "paper_timer": "Read, Check, then a dim five minute timer while the user writes on paper. No sound. No further sentences."
+    },
+    "suggest_policies": {
+      "normal": "May be suggested on Today's practice.",
+      "night_only": "Suggested only at night hours.",
+      "opt_in": "Never suggested unless the user has opened this category before.",
+      "limited": "Suggested at most once every limited_category_min_days_between_suggestions days."
+    }
+  },
+  "categories": [
+    {
+      "id": "my_values",
+      "title": "My values",
+      "when_to_use": "Use when you feel pressure or doubt.",
+      "session_mode": "standard",
+      "suggest_policy": "normal",
+      "deep_option_seconds": 600,
+      "evidence": "moderate",
+      "research_note_id": "values_01",
+      "affirmations": [
+        {
+          "id": "v_001",
+          "levels": {
+            "gentle": "Some things matter to me more than others, and I can notice what they are.",
+            "medium": "I know what I value, and I can act on it today.",
+            "strong": "My values guide my choices, even on hard days."
+          },
+          "prompt": "Name one value. Write one small way you used it this week.",
+          "mechanism": "values_reflection",
+          "best_time": "morning"
+        },
+        {
+          "id": "v_002",
+          "levels": {
+            "gentle": "I do not need to feel confident to act on what I care about.",
+            "medium": "I can take one small step that fits my values.",
+            "strong": "I act on what I value, whatever my mood."
+          },
+          "prompt": "Which step fits your values today?",
+          "mechanism": "values_reflection",
+          "best_time": "morning"
+        },
+        {
+          "id": "v_003",
+          "levels": {
+            "gentle": "I can start to notice what does not fit my values.",
+            "medium": "I can say no to something that does not fit what I value.",
+            "strong": "I protect my time for what matters to me."
+          },
+          "prompt": "What is one thing you could say no to this week?",
+          "mechanism": "values_reflection",
+          "best_time": "any"
+        }
+      ]
+    },
+    {
+      "id": "kind_to_myself",
+      "title": "Kind to myself",
+      "when_to_use": "Use after a mistake, or when you are being hard on yourself.",
+      "session_mode": "standard",
+      "suggest_policy": "normal",
+      "evidence": "moderate",
+      "research_note_id": "selfcompassion_01",
+      "affirmations": [
+        {
+          "id": "k_001",
+          "levels": {
+            "gentle": "I can try to speak to myself a little more gently today.",
+            "medium": "I talk to myself the way I would talk to a good friend.",
+            "strong": "I treat myself with the same kindness I give to others."
+          },
+          "prompt": "What would you say to a friend in your situation? Say it to yourself.",
+          "mechanism": "self_kindness",
+          "best_time": "any"
+        },
+        {
+          "id": "k_002",
+          "levels": {
+            "gentle": "Making a mistake is part of being human.",
+            "medium": "This mistake is one event. It is not a verdict on me.",
+            "strong": "I can learn from this mistake and still respect myself."
+          },
+          "prompt": "Write one thing you can learn from it.",
+          "mechanism": "self_kindness_common_humanity",
+          "best_time": "evening"
+        },
+        {
+          "id": "k_003",
+          "levels": {
+            "gentle": "I can notice when I am being hard on myself.",
+            "medium": "I can pause and ask what I need right now.",
+            "strong": "I give myself what I need, as I would for someone I love."
+          },
+          "prompt": "What do you need right now: rest, food, a walk, a call?",
+          "mechanism": "self_kindness",
+          "best_time": "any"
+        }
+      ]
+    },
+    {
+      "id": "my_body_can",
+      "title": "What my body can do",
+      "when_to_use": "Use when you are focused on how you look.",
+      "session_mode": "standard",
+      "suggest_policy": "normal",
+      "evidence": "moderate",
+      "research_note_id": "body_01",
+      "affirmations": [
+        {
+          "id": "b_001",
+          "levels": {
+            "gentle": "My body did some useful things today.",
+            "medium": "My body carried me through today, and I can thank it for that.",
+            "strong": "My body is strong in many ways that have nothing to do with how it looks."
+          },
+          "prompt": "Name three things your body did for you today.",
+          "mechanism": "body_functionality",
+          "best_time": "evening"
+        },
+        {
+          "id": "b_002",
+          "levels": {
+            "gentle": "My hands do many things for me.",
+            "medium": "My hands cook, write, hold, and comfort. They do real work.",
+            "strong": "I value my hands for everything they make possible."
+          },
+          "prompt": "Describe one thing your hands did today.",
+          "mechanism": "body_functionality",
+          "best_time": "any"
+        },
+        {
+          "id": "b_003",
+          "levels": {
+            "gentle": "I can notice one thing my body does well.",
+            "medium": "My body lets me laugh, walk, rest, and hug people.",
+            "strong": "I respect my body for what it does every day."
+          },
+          "prompt": "Which of these did you do today?",
+          "mechanism": "body_functionality",
+          "best_time": "any"
+        }
+      ]
+    },
+    {
+      "id": "hard_days",
+      "title": "Hard days",
+      "when_to_use": "Use on a difficult day.",
+      "session_mode": "standard",
+      "suggest_policy": "normal",
+      "evidence": "moderate",
+      "research_note_id": "both_sides_01",
+      "affirmations": [
+        {
+          "id": "h_001",
+          "levels": {
+            "gentle": "Today is hard, and I am still here.",
+            "medium": "Today is hard, and I am still getting through it.",
+            "strong": "Today is hard, and I can handle the next hour."
+          },
+          "prompt": "What is the next hour? Write one small step.",
+          "mechanism": "believable_both_sides",
+          "best_time": "any"
+        },
+        {
+          "id": "h_002",
+          "levels": {
+            "gentle": "I can feel nervous and still go.",
+            "medium": "I can feel unsure and still do this.",
+            "strong": "Feeling nervous does not stop me from acting."
+          },
+          "prompt": "What are you about to do while nervous?",
+          "mechanism": "believable_both_sides",
+          "best_time": "any"
+        },
+        {
+          "id": "h_003",
+          "levels": {
+            "gentle": "Some things went badly today. Some things went well.",
+            "medium": "Both are true: some things went badly, and some things went well.",
+            "strong": "A bad part of the day does not cancel the good parts."
+          },
+          "prompt": "Write one thing that went badly and one thing that went well.",
+          "mechanism": "believable_both_sides",
+          "best_time": "evening"
+        }
+      ]
+    },
+    {
+      "id": "by_my_name",
+      "title": "Talking to myself by name",
+      "when_to_use": "Use when your thoughts keep going round the same worry.",
+      "session_mode": "standard",
+      "suggest_policy": "normal",
+      "evidence": "moderate",
+      "research_note_id": "distanced_01",
+      "affirmations": [
+        {
+          "id": "n_001",
+          "levels": {
+            "gentle": "{name}, what is one small next step?",
+            "medium": "{name}, you have handled hard moments before.",
+            "strong": "{name}, you can handle this."
+          },
+          "prompt": "Say it quietly, using your own name.",
+          "mechanism": "distanced_self_talk",
+          "best_time": "any"
+        },
+        {
+          "id": "n_002",
+          "levels": {
+            "gentle": "{name}, what is going on here?",
+            "medium": "{name}, why do you feel this way, and what would help?",
+            "strong": "{name}, you know what to do next."
+          },
+          "prompt": "Answer in one sentence, as if you were advising {name}.",
+          "mechanism": "distanced_self_talk",
+          "best_time": "any"
+        },
+        {
+          "id": "n_003",
+          "levels": {
+            "gentle": "{name}, what would you tell a friend in this situation?",
+            "medium": "You are allowed to take your time, {name}.",
+            "strong": "{name}, you choose how to respond."
+          },
+          "prompt": "Say it quietly, with your name.",
+          "mechanism": "distanced_self_talk",
+          "best_time": "any"
+        }
+      ]
+    },
+    {
+      "id": "before_something_big",
+      "title": "Before something big",
+      "when_to_use": "Use right before a speech, meeting, interview, or test.",
+      "session_mode": "say_aloud",
+      "suggest_policy": "normal",
+      "evidence": "moderate",
+      "research_note_id": "excitement_01",
+      "affirmations": [
+        {
+          "id": "e_001",
+          "levels": {
+            "gentle": "My heart is racing. That can also be excitement.",
+            "medium": "I am excited.",
+            "strong": "I am excited, and I am ready to begin."
+          },
+          "prompt": "Say it out loud once before you begin.",
+          "mechanism": "anxiety_reappraisal",
+          "best_time": "any"
+        },
+        {
+          "id": "e_002",
+          "levels": {
+            "gentle": "Nerves and excitement feel very similar in the body.",
+            "medium": "This energy can help me perform.",
+            "strong": "I turn this energy into focus."
+          },
+          "prompt": "Where do you feel the energy? Name the place in your body.",
+          "mechanism": "anxiety_reappraisal",
+          "best_time": "any"
+        },
+        {
+          "id": "e_003",
+          "levels": {
+            "gentle": "I can think about how this could go well.",
+            "medium": "This is a chance to do something that matters to me.",
+            "strong": "I am looking forward to this chance."
+          },
+          "prompt": "Write one way this could go well.",
+          "mechanism": "anxiety_reappraisal",
+          "best_time": "any"
+        }
+      ]
+    },
+    {
+      "id": "small_good_things",
+      "title": "Small good things",
+      "when_to_use": "Use in the evening. Once or twice a week is enough.",
+      "session_mode": "standard",
+      "suggest_policy": "limited",
+      "evidence": "small",
+      "research_note_id": "gratitude_01",
+      "affirmations": [
+        {
+          "id": "g_001",
+          "levels": {
+            "gentle": "I can look for one thing that went well today.",
+            "medium": "One good thing happened today, and I noticed it.",
+            "strong": "I notice the good things in my day, and I know why they happened."
+          },
+          "prompt": "Write three good things from today and one sentence on why each happened.",
+          "mechanism": "three_good_things",
+          "best_time": "evening"
+        },
+        {
+          "id": "g_002",
+          "levels": {
+            "gentle": "I can think of one person who helped me recently.",
+            "medium": "Someone made my week easier, and I can thank them.",
+            "strong": "I tell people when they matter to me."
+          },
+          "prompt": "Who could you thank today? Send one short message.",
+          "mechanism": "expressed_gratitude",
+          "best_time": "any"
+        },
+        {
+          "id": "g_003",
+          "levels": {
+            "gentle": "A small good moment still counts.",
+            "medium": "A warm drink, a kind word, a clear sky. Small things count.",
+            "strong": "I notice small good things, and they matter."
+          },
+          "prompt": "What is one small good thing near you right now?",
+          "mechanism": "three_good_things",
+          "best_time": "any"
+        }
+      ]
+    },
+    {
+      "id": "bedtime_unload",
+      "title": "Before sleep",
+      "when_to_use": "Use before you go to sleep. Write on paper, not on your phone.",
+      "session_mode": "paper_timer",
+      "session_seconds": 300,
+      "suggest_policy": "night_only",
+      "evidence": "moderate_small_sample",
+      "research_note_id": "sleep_01",
+      "affirmations": [
+        {
+          "id": "s_001",
+          "levels": {
+            "gentle": "I can write down what is on my mind.",
+            "medium": "Tomorrow's tasks are written down. They can wait until morning.",
+            "strong": "My plan for tomorrow exists, so my head can rest."
+          },
+          "prompt": "Write tomorrow's tasks on paper for five minutes. Be specific.",
+          "mechanism": "bedtime_todo_list",
+          "best_time": "night"
+        },
+        {
+          "id": "s_002",
+          "levels": {
+            "gentle": "I do not have to solve everything tonight.",
+            "medium": "What is unfinished is on paper now, not only in my head.",
+            "strong": "I decide when to think about this: tomorrow, not tonight."
+          },
+          "prompt": "Which task is first tomorrow morning?",
+          "mechanism": "bedtime_todo_list",
+          "best_time": "night"
+        },
+        {
+          "id": "s_003",
+          "levels": {
+            "gentle": "I can write this worry down instead of holding it in my head.",
+            "medium": "I can put this worry on paper and look at it tomorrow.",
+            "strong": "This worry has a first step, and the step is for tomorrow."
+          },
+          "prompt": "Write the worry in one line, then the first step for tomorrow.",
+          "mechanism": "bedtime_todo_list",
+          "best_time": "night"
+        }
+      ]
+    },
+    {
+      "id": "my_future_self",
+      "title": "My future self",
+      "when_to_use": "Use when you want to look ahead.",
+      "session_mode": "standard",
+      "suggest_policy": "normal",
+      "evidence": "small_short_term",
+      "research_note_id": "future_01",
+      "affirmations": [
+        {
+          "id": "f_001",
+          "levels": {
+            "gentle": "I can imagine a future that goes well.",
+            "medium": "I can picture my life one year from now, going as well as it can.",
+            "strong": "I am working toward a future I want."
+          },
+          "prompt": "Write for a few minutes about your best possible life one year from now.",
+          "mechanism": "best_possible_self",
+          "best_time": "morning"
+        },
+        {
+          "id": "f_002",
+          "levels": {
+            "gentle": "I can think about one thing I would like to be true next year.",
+            "medium": "I know one thing I want, and I can take a step toward it.",
+            "strong": "I move toward what I want with steady steps."
+          },
+          "prompt": "What is one step you could take this week?",
+          "mechanism": "best_possible_self",
+          "best_time": "morning"
+        },
+        {
+          "id": "f_003",
+          "levels": {
+            "gentle": "I can wonder what my best year would include.",
+            "medium": "My best possible future includes things I can start now.",
+            "strong": "I am building the life I described."
+          },
+          "prompt": "Which part of your best future can start this week?",
+          "mechanism": "best_possible_self",
+          "best_time": "any"
+        }
+      ]
+    },
+    {
+      "id": "not_alone",
+      "title": "I am not alone",
+      "when_to_use": "Use when you feel alone with a problem.",
+      "session_mode": "standard",
+      "suggest_policy": "normal",
+      "evidence": "small_to_moderate",
+      "research_note_id": "belonging_01",
+      "affirmations": [
+        {
+          "id": "a_001",
+          "levels": {
+            "gentle": "Other women feel this way too.",
+            "medium": "Many women feel this way. I am not the only one.",
+            "strong": "My experience is shared by many people, and that connects me to them."
+          },
+          "prompt": "Think of one person who may feel the same. What would you say to her?",
+          "mechanism": "common_humanity",
+          "best_time": "any"
+        },
+        {
+          "id": "a_002",
+          "levels": {
+            "gentle": "I can ask for help with one small thing.",
+            "medium": "Asking for help is a normal part of life.",
+            "strong": "I let people support me, and I support them."
+          },
+          "prompt": "Who could you ask for help this week?",
+          "mechanism": "belonging",
+          "best_time": "any"
+        },
+        {
+          "id": "a_003",
+          "levels": {
+            "gentle": "I belong in more places than I notice.",
+            "medium": "I belong to groups of people who care about me.",
+            "strong": "I belong, and I do not have to earn it."
+          },
+          "prompt": "Name one group or person who makes you feel you belong.",
+          "mechanism": "belonging",
+          "best_time": "any"
+        }
+      ]
+    },
+    {
+      "id": "midlife_and_beyond",
+      "title": "Midlife and beyond",
+      "when_to_use": "Use when you want to think about what you value now.",
+      "session_mode": "standard",
+      "suggest_policy": "opt_in",
+      "evidence": "small_to_moderate",
+      "research_note_id": "midlife_01",
+      "audience": "Women aged 46 and older. Show only if the user chooses this category.",
+      "affirmations": [
+        {
+          "id": "m_001",
+          "levels": {
+            "gentle": "I have learned things that younger me did not know.",
+            "medium": "My experience is useful to me and to other people.",
+            "strong": "My experience gives me a clear view of what matters."
+          },
+          "prompt": "Write one thing you know now that you did not know ten years ago.",
+          "mechanism": "values_reflection",
+          "best_time": "any"
+        },
+        {
+          "id": "m_002",
+          "levels": {
+            "gentle": "I can choose what to spend my energy on.",
+            "medium": "At this stage of life, I can choose what deserves my time.",
+            "strong": "I spend my time on what I value."
+          },
+          "prompt": "Name one thing you want more of and one thing you want less of.",
+          "mechanism": "values_reflection",
+          "best_time": "morning"
+        },
+        {
+          "id": "m_003",
+          "levels": {
+            "gentle": "My worth is not decided by my age.",
+            "medium": "I can value who I am now, not only who I was.",
+            "strong": "I am a full person at every age."
+          },
+          "prompt": "Describe one thing you are proud of from the past year.",
+          "mechanism": "values_reflection",
+          "best_time": "any"
+        }
+      ]
+    },
+    {
+      "id": "work_and_voice",
+      "title": "Work and voice",
+      "when_to_use": "Use before a hard task or a conversation at work.",
+      "session_mode": "standard",
+      "suggest_policy": "normal",
+      "evidence": "weak",
+      "research_note_id": null,
+      "affirmations": [
+        {
+          "id": "w_001",
+          "levels": {
+            "gentle": "I can think about why my work matters to me.",
+            "medium": "Before a hard task, I remember what I value about my work.",
+            "strong": "I do hard tasks because they matter to me."
+          },
+          "prompt": "Write what you value about this work.",
+          "mechanism": "values_reflection",
+          "best_time": "morning"
+        },
+        {
+          "id": "w_002",
+          "levels": {
+            "gentle": "I can ask for what I need at work.",
+            "medium": "I can ask clearly for what I need, and a no is not a failure.",
+            "strong": "I speak up about my work, and my voice counts."
+          },
+          "prompt": "Write the one sentence you want to say.",
+          "mechanism": "assertive_prompt",
+          "best_time": "morning"
+        },
+        {
+          "id": "w_003",
+          "levels": {
+            "gentle": "I can notice one thing I did well.",
+            "medium": "What I did well this week is real, and I can say so.",
+            "strong": "I own my results and I share them clearly."
+          },
+          "prompt": "Name one result from this week, in one sentence.",
+          "mechanism": "assertive_prompt",
+          "best_time": "evening"
+        }
+      ]
+    }
+  ],
+  "research_notes": [
+    {
+      "id": "values_01",
+      "claim_ui": "In a lab study, adults who first reflected on their personal values had a lower stress hormone response to a stress test.",
+      "population": "85 adults, laboratory study",
+      "source": "Creswell et al., 2005, Psychological Science",
+      "source_check": "abstract_read",
+      "do_not_say": "Do not say it lowers everyday stress or cortisol in daily life.",
+      "extra_fact": "Large replications in schools found mixed and sometimes null results (doi 10.1037/edu0000141). Keep the wording modest."
+    },
+    {
+      "id": "selfcompassion_01",
+      "claim_ui": "In a study of women, seeing self-compassion quotes led to better mood and body image than seeing neutral images.",
+      "population": "Women viewing images in an experiment",
+      "source": "Reported by the Greater Good Science Center, UC Berkeley. Find the original paper before publishing.",
+      "source_check": "secondary_only",
+      "extra_fact": "A 2015 meta-analysis (Self and Identity, 14(5)) found women score slightly lower on self-compassion than men, with a small difference. Do not present the gap as large.",
+      "do_not_say": "Do not say women lack self-compassion."
+    },
+    {
+      "id": "body_01",
+      "claim_ui": "In a trial with 261 British women aged 18 to 30, writing about what the body can do improved body appreciation, and the effect lasted one month.",
+      "population": "261 British women, aged 18 to 30, who wanted to improve body image",
+      "source": "Alleva et al., 2018, Body Image 25, 85-96",
+      "source_check": "abstract_read",
+      "do_not_say": "Do not say it works for every age or lasts longer than one month."
+    },
+    {
+      "id": "both_sides_01",
+      "claim_ui": "In experiments, people with low self-esteem felt better when they considered both when a positive statement was true and when it was not, than when they focused only on the positive side.",
+      "population": "University students",
+      "source": "Wood, Perunovic and Lee, 2009, Psychological Science 20(7), 860-866",
+      "source_check": "abstract_read",
+      "do_not_say": "Do not say all affirmations are harmful."
+    },
+    {
+      "id": "distanced_01",
+      "claim_ui": "In experiments, talking to yourself by your own name, instead of using 'I', reduced emotional reactions to negative experiences.",
+      "population": "Adults in laboratory experiments",
+      "source": "Orvell et al., 2021, Clinical Psychological Science 9(1), 68-78",
+      "source_check": "abstract_read",
+      "extra_fact": "A 2025 real-life study found the benefit did not appear in every situation.",
+      "do_not_say": "Do not say it always works or that it is effortless."
+    },
+    {
+      "id": "excitement_01",
+      "claim_ui": "In experiments, people who said 'I am excited' before a speech were rated as more persuasive and competent than people who said 'I am calm'.",
+      "population": "College students and community members, Harvard experiments",
+      "source": "Brooks, 2014, Journal of Experimental Psychology: General 143(3), 1144-1158",
+      "source_check": "secondary_only",
+      "do_not_say": "Do not say it treats anxiety disorders."
+    },
+    {
+      "id": "gratitude_01",
+      "claim_ui": "A large review of gratitude exercises, covering 145 studies and 28 countries, found a small improvement in well-being.",
+      "population": "24,804 participants across 28 countries",
+      "source": "PNAS, 2025 meta-analysis. Find the original paper before publishing.",
+      "source_check": "secondary_only",
+      "extra_fact": "A separate 2023 review of 25 trials found a small positive effect (g = 0.22). A 2021 review found small effects on depression and anxiety symptoms compared with active controls. In one student study from 2005, counting blessings once a week helped more than doing it three times a week.",
+      "do_not_say": "Do not say it is a strong effect or a treatment for depression or anxiety."
+    },
+    {
+      "id": "sleep_01",
+      "claim_ui": "In a sleep lab study, young adults who wrote a specific to-do list for five minutes fell asleep faster than those who wrote about what they had already done.",
+      "population": "57 young adults, one night in a sleep laboratory",
+      "source": "Scullin et al., 2018, Journal of Experimental Psychology: General 147(1), 139-146",
+      "source_check": "abstract_read",
+      "do_not_say": "Do not say it cures insomnia. The sample was small and young. Recommend paper, not a phone."
+    },
+    {
+      "id": "future_01",
+      "claim_ui": "In trials, writing about your best possible future improved mood and positive expectations, mostly for a short time.",
+      "population": "Mostly adult and student samples across many trials",
+      "source": "Carrillo et al., 2019, PLOS ONE 14(9), e0222386 (29 studies). A 2020 review of 34 trials found small effects and no strong follow-up effects.",
+      "source_check": "abstract_read",
+      "do_not_say": "Do not say it creates lasting change."
+    },
+    {
+      "id": "belonging_01",
+      "claim_ui": "A review of self-affirmation studies found small improvements in well-being, including a sense of community and belonging.",
+      "population": "Teens, college students and adults, across countries",
+      "source": "Zhang et al., 2025, American Psychologist (meta-analysis, 129 tests, 67 studies)",
+      "source_check": "secondary_only",
+      "do_not_say": "Do not say it removes loneliness."
+    },
+    {
+      "id": "midlife_01",
+      "claim_ui": "In a trial with 140 women aged 46 and older, a short self-affirmation exercise led to higher well-being at follow-up than a control task.",
+      "population": "140 women aged 46 and older",
+      "source": "Armitage, 2016, Quality of Life Research 25, 385-391",
+      "source_check": "abstract_read",
+      "do_not_say": "Do not describe how long the effect lasts. I did not verify the follow-up length."
+    }
+  ]
+}

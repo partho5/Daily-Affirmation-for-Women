@@ -1,0 +1,91 @@
+<resources>
+    <!-- App Name -->
+    <string name="app_name">Daily Affirmation for Women</string>
+
+    <!-- AGENT_INSTRUCTIONS.md Section 5: Exact UI Copy Verbatim -->
+    <string name="today_card_title">Today\'s practice</string>
+    <string name="time_standard">About 2 minutes</string>
+    <string name="time_sleep">About 5 minutes</string>
+    <string name="start_button">Start</string>
+    <string name="done_today">That is enough for today. Come back tomorrow, or open any category.</string>
+    <string name="read_instruction">Read it slowly, once. Say it out loud if you can.</string>
+    <string name="read_instruction_say_aloud">Say it out loud, once, just before you begin.</string>
+    <string name="check_question">Does it feel true right now?</string>
+    <string name="check_true">Feels true</string>
+    <string name="check_not_yet">Not yet</string>
+    <string name="not_yet_message">That is okay. Think of one time it was true for you, and one time it was not.</string>
+    <string name="do_header">One small step</string>
+    <string name="do_time_hint">Take about a minute.</string>
+    <string name="answer_box_hint">Write a line (optional). It will not be saved.</string>
+    <string name="think_instead">I will think about it</string>
+    <string name="sleep_instruction">Put your phone down. Write on paper for five minutes. Be specific.</string>
+    <string name="sleep_start">Start five minutes</string>
+    <string name="sleep_end">Time is up. Good night.</string>
+    <string name="close_message">That is enough for now.</string>
+    <string name="another_sentence">Another sentence</string>
+    <string name="done_button">Done</string>
+    <string name="category_no_fit">This category may not fit you right now. You can try another one, or skip it for a while.</string>
+    <string name="deep_values_button">Take 10 minutes (optional)</string>
+    <string name="deep_values_text">Pick one value. Write about it for ten minutes: why it matters to you, and one time it guided you.</string>
+    <string name="deep_values_end">You do not need to repeat this often.</string>
+
+    <!-- Onboarding How it works cards (Section 5) -->
+    <string name="how_it_works_title">How it works</string>
+    <string name="onboarding_name_subtitle">Used only for sentences that mention your name.</string>
+    <string name="how_card_1">Read it slowly, once or twice. Say it out loud if you can.</string>
+    <string name="how_card_2">Ask yourself if it feels true. \"Not yet\" is a fine answer.</string>
+    <string name="how_card_3">Do the small step under the sentence. That is the whole practice. About 2 minutes.</string>
+
+    <!-- Six Reading Rules (Section 3.4 & Section 5) -->
+    <string name="rule_1">Read slowly, once or twice. Do not repeat it many times.</string>
+    <string name="rule_2">Notice if it feels true. \"Not yet\" is a fine answer.</string>
+    <string name="rule_3">If it does not feel true, think of a time it was true and a time it was not.</string>
+    <string name="rule_4">Do the small step under the sentence. It matters more than the sentence.</string>
+    <string name="rule_5">Stop after one to three sentences. One session a day is enough.</string>
+    <string name="rule_6">If something makes you feel worse, stop. Try another category or take a break.</string>
+
+    <!-- Additional Required Copy (Sections 3.4, 4 & 7) -->
+    <string name="user_added_sentence_hint">Write something you can believe today.</string>
+    <string name="favorites_empty">No saved sentences yet.</string>
+    <string name="about_disclaimer">This app is for everyday well-being. It is not medical care or therapy. If you are in distress, please contact a local health professional or emergency services.</string>
+    <string name="onboarding_question">When you read a kind sentence about yourself, what usually happens?</string>
+    <string name="onboarding_opt_believe">I believe it</string>
+    <string name="onboarding_opt_want">I want to believe it</string>
+    <string name="onboarding_opt_doubt">I doubt it</string>
+    <string name="what_research_found">What research found</string>
+    <string name="add_my_own_sentence">Add my own sentence</string>
+    <string name="mine_badge">Mine</string>
+    <string name="delete_all_data">Delete all my data</string>
+    <string name="delete_data_confirm_title">Delete all data</string>
+    <string name="delete_data_confirm_msg">Are you sure you want to delete all your data? This cannot be undone.</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="delete_button">Delete</string>
+    <string name="name_prompt_title">Add your first name</string>
+    <string name="name_prompt_desc">To view this sentence personalized for you, set your name in Settings.</string>
+    <string name="go_to_settings">Go to Settings</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_favorites">Favorites</string>
+    <string name="nav_settings">Settings</string>
+    <string name="about_title">About</string>
+    <string name="name_field_label">Your first name</string>
+    <string name="name_field_hint">Optional</string>
+    <string name="save_button">Save</string>
+    <string name="edit_button">Edit</string>
+    <string name="next_button">Next</string>
+    <string name="skip_button">Skip</string>
+    <string name="start_practice">Start practice</string>
+    <string name="reading_rules_title">Reading rules</string>
+    <string name="source_prefix">Source: </string>
+    <string name="content_desc_favorite">Save sentence</string>
+    <string name="content_desc_unfavorite">Remove from saved</string>
+    <string name="content_desc_close">Close</string>
+    <string name="content_desc_back">Back</string>
+    <string name="content_desc_feels_true">Feels true</string>
+    <string name="content_desc_not_yet">Not yet</string>
+    <string name="edit_sentence_title">Edit sentence</string>
+    <string name="delete_sentence_title">Delete sentence</string>
+    <string name="delete_sentence_confirm_msg">Delete this sentence?</string>
+    <string name="dataset_error_title">Something went wrong</string>
+    <string name="dataset_error_desc">Unable to load affirmations. Please try again.</string>
+    <string name="retry_button">Try again</string>
+</resources>

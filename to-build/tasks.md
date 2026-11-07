@@ -1,0 +1,521 @@
+RULE: this PC hangs under load, so do not run `./gradlew build`, tests, or any other heavy command.
+Write code only, and verify at code level (read the code against the contract).
+If a check genuinely needs a run, stop and ask the user: they push, pull on a higher-RAM PC and run the build there.
+
+build one at a time.
+and self track progress. you can update this file if needed.
+-----------------
+
+# Development Plan: Daily Affirmation for Women (Native Android / Kotlin)
+
+## Architecture & Performance Baseline
+- **Platform**: Native Android
+- **Language**: **Kotlin**
+- **UI Framework**: Jetpack Compose (Modern, declarative, highly responsive, zero XML overhead for screens)
+- **Cold-Start Performance (Lightning-Fast Startup)**:
+  - **Zero Third-Party Library Bloat**: Strictly avoid heavy DI frameworks (no Hilt/Dagger), reflection-heavy libraries, or unnecessary SDKs. Use lightweight manual dependency injection / lazy singletons.
+  - **Zero Extra JSON Dependencies**: Use Android platform built-in `org.json` (0 KB APK overhead, pre-loaded in Android runtime, instant cold parsing) or lightweight standard serialization.
+  - **Immediate Launch Straight to Home**: Open directly to `MainActivity` without any artificial splash screen or delay (guaranteed < 1 second).
+  - **Asynchronous / Deferred Loading**: Load and parse `affirmation_dataset.json` asynchronously using Kotlin Coroutines on `Dispatchers.IO`, preventing any UI thread freezing.
+  - **Lightweight Local Storage**: Use Android native `SharedPreferences` (instant in-memory caching) for user state and logs.
+  - **Strict Offline-First**: Zero network dependencies, zero analytics, zero ad SDKs.
+- **Contract Fidelity**:
+  - Exact UI copy from `AGENT_INSTRUCTIONS.md` Section 5 stored verbatim in `strings.xml`.
+  - All numbers (seconds, limits, hours) read dynamically from `meta.session`.
+  - Strict compliance with Section 6 Avoid List (no gamification, no streaks, no sound in sleep mode, no text persistence).
+
+---
+
+## Part 1: Android Project Scaffolding & Minimal Build Configuration
+- **Source of Truth**: `AGENT_INSTRUCTIONS.md` Section 0, 8; User performance directive
+- **Target Files**:
+  - `build.gradle.kts` (Root build script)
+  - `settings.gradle.kts` (Project settings & repositories)
+  - `gradle.properties` (Memory-efficient Gradle flags)
+  - `app/build.gradle.kts` (App module build script with minimal dependencies)
+  - `app/src/main/AndroidManifest.xml`
+  - `app/src/main/assets/affirmation_dataset.json`
+- **Tasks**:
+  - [x] Configure `settings.gradle.kts` with Google Maven and Maven Central.
+  - [x] Configure `build.gradle.kts` with Android Gradle Plugin (AGP) and Kotlin plugins.
+  - [x] Configure `app/build.gradle.kts`:
+    - Enable Jetpack Compose with Kotlin compiler extension.
+    - Minimal dependencies only: `androidx.core:core-ktx`, `androidx.activity:activity-compose`, `androidx.compose.material3:material3`, `androidx.compose.ui:ui`, `androidx.lifecycle:lifecycle-viewmodel-compose`, `kotlinx-coroutines-android`.
+    - No external JSON or network libraries (use native `org.json` and Android SDK built-ins).
+  - [x] Configure `app/src/main/AndroidManifest.xml`:
+    - Application package: `com.jovoc.dailyaffirmationwomen`
+    - Permission: `android.permission.VIBRATE` (for the sleep timer haptic cue).
+    - Zero network or tracking permissions.
+    - `MainActivity` configured as launcher with immediate launch.
+  - [x] Copy `affirmation_dataset.json` into `app/src/main/assets/affirmation_dataset.json` as a read-only bundled asset.
+- **Code-Level Verification**:
+  - Verify valid Kotlin DSL syntax in all `.gradle.kts` files.
+  - Verify `AndroidManifest.xml` declares only `android.permission.VIBRATE` and no internet/location/tracking permissions.
+  - Confirm `affirmation_dataset.json` exists in `app/src/main/assets/`.
+
+---
+
+## Part 2: Exact Verbatim String Resources & Visual Design Tokens
+- **Source of Truth**: `AGENT_INSTRUCTIONS.md` Section 5, 6, 7
+- **Target Files**:
+  - `app/src/main/res/values/strings.xml`
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/ui/theme/Color.kt`
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/ui/theme/Type.kt`
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/ui/theme/Theme.kt`
+- **Tasks**:
+  - [x] Create `strings.xml` containing all 27 exact UI copy keys from Section 5 verbatim:
+    - `today_card_title`: "Today's practice"
+    - `time_standard`: "About 2 minutes"
+    - `time_sleep`: "About 5 minutes"
+    - `start_button`: "Start"
+    - `done_today`: "That is enough for today. Come back tomorrow, or open any category."
+    - `read_instruction`: "Read it slowly, once. Say it out loud if you can."
+    - `read_instruction_say_aloud`: "Say it out loud, once, just before you begin."
+    - `check_question`: "Does it feel true right now?"
+    - `check_true`: "Feels true"
+    - `check_not_yet`: "Not yet"
+    - `not_yet_message`: "That is okay. Think of one time it was true for you, and one time it was not."
+    - `do_header`: "One small step"
+    - `do_time_hint`: "Take about a minute."
+    - `answer_box_hint`: "Write a line (optional). It will not be saved."
+    - `think_instead`: "I will think about it"
+    - `sleep_instruction`: "Put your phone down. Write on paper for five minutes. Be specific."
+    - `sleep_start`: "Start five minutes"
+    - `sleep_end`: "Time is up. Good night."
+    - `close_message`: "That is enough for now."
+    - `another_sentence`: "Another sentence"
+    - `done_button`: "Done"
+    - `category_no_fit`: "This category may not fit you right now. You can try another one, or skip it for a while."
+    - `deep_values_button`: "Take 10 minutes (optional)"
+    - `deep_values_text`: "Pick one value. Write about it for ten minutes: why it matters to you, and one time it guided you."
+    - `deep_values_end`: "You do not need to repeat this often."
+    - `how_card_1`: "Read it slowly, once or twice. Say it out loud if you can."
+    - `how_card_2`: "Ask yourself if it feels true. \"Not yet\" is a fine answer."
+    - `how_card_3`: "Do the small step under the sentence. That is the whole practice. About 2 minutes."
+    - `rule_5`: "Stop after one to three sentences. One session a day is enough."
+    - `rule_6`: "If something makes you feel worse, stop. Try another category or take a break."
+    - Additional mandatory copy from Section 4 & 7:
+      - `user_added_sentence_hint`: "Write something you can believe today."
+      - `favorites_empty`: "No saved sentences yet."
+      - `about_disclaimer`: "This app is for everyday well-being. It is not medical care or therapy. If you are in distress, please contact a local health professional or emergency services."
+      - `onboarding_question`: "When you read a kind sentence about yourself, what usually happens?"
+      - `onboarding_opt_believe`: "I believe it"
+      - `onboarding_opt_want`: "I want to believe it"
+      - `onboarding_opt_doubt`: "I doubt it"
+      - `what_research_found`: "What research found"
+      - `add_my_own_sentence`: "Add my own sentence"
+      - `mine_badge`: "Mine"
+      - `delete_all_data`: "Delete all my data"
+      - `delete_data_confirm_msg`: "Are you sure you want to delete all your data? This cannot be undone."
+      - `name_prompt_title`: "Add your first name"
+      - `name_prompt_desc`: "To view this sentence personalized for you, set your name in Settings."
+      - `go_to_settings`: "Go to Settings"
+  - [x] Implement `Color.kt` & `Theme.kt`:
+    - Calm, soft neutral backgrounds (e.g., warm cream/linen light mode, deep slate dark mode).
+    - Calm non-pink accent color (e.g., gentle sage green or muted lavender).
+    - Full light and dark mode support with WCAG AA compliance (contrast >= 4.5:1).
+    - Dedicated `SleepTheme` for dim dark sleep timer.
+  - [x] Implement `Type.kt`:
+    - Sentence typography: 20 to 24 sp.
+    - Prompt typography: 14 to 16 sp.
+    - Body typography: >= 16 sp.
+    - Respect system font scale settings.
+- **Code-Level Verification**:
+  - Compare every string entry in `strings.xml` against `AGENT_INSTRUCTIONS.md` Section 5.
+  - Verify color contrast and typography sizes adhere to Section 7 specs.
+
+---
+
+## Part 3: Kotlin Data Models & Zero-Overhead Dataset Parser
+- **Source of Truth**: `AGENT_INSTRUCTIONS.md` Section 8, 9; Fast startup requirement
+- **Target Files**:
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/data/model/AffirmationModels.kt`
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/data/repository/DatasetRepository.kt`
+- **Tasks**:
+  - [x] Define Kotlin data models matching `affirmation_dataset.json`:
+    - `enum class Level { GENTLE, MEDIUM, STRONG }`
+    - `enum class SessionMode { STANDARD, SAY_ALOUD, PAPER_TIMER }`
+    - `enum class SuggestPolicy { NORMAL, NIGHT_ONLY, OPT_IN, LIMITED }`
+    - `data class MetaSession(...)` reading:
+      - `standardTargetSeconds`: 150
+      - `maxSentencesPerSession`: 3
+      - `nightStartHour`: 21
+      - `nightEndHour`: 5
+      - `limitedCategoryMinDaysBetweenSuggestions`: 3
+      - `noFitAfterNotYetInARow`: 3
+      - `avoidRepeatingSentenceDays`: 7
+    - `data class Affirmation(val id: String, val levels: Map<Level, String>, val prompt: String)`
+    - `data class Category(...)`
+    - `data class ResearchNote(val id: String, val claimUi: String, val population: String, val source: String)`
+  - [x] Implement `DatasetRepository` with zero extra libraries:
+    - Use Android built-in `org.json.JSONObject` to parse `assets/affirmation_dataset.json`.
+    - Run parsing on `Dispatchers.IO` (deferred background loading) so cold app launch is instant.
+    - Validate required fields on parse:
+      - Every category must have `id`, `title`, and `affirmations`.
+      - Every affirmation must have `levels.gentle`, `levels.medium`, `levels.strong`.
+    - Cache in-memory singleton after parsing for subsequent synchronous reads.
+    - Provide graceful error state: if parsing fails, emit error state so UI shows a gentle error message rather than crashing.
+- **Code-Level Verification**:
+  - Confirm `org.json` is used without adding external JSON libraries.
+  - Confirm background parsing on `Dispatchers.IO` with thread safety.
+  - Verify validation logic strictly enforces required fields per Section 8.
+
+---
+
+## Part 4: Native Android Local Storage & App State Engine
+- **Source of Truth**: `AGENT_INSTRUCTIONS.md` Section 8 (Local storage model), Section 4 (F4, F5, F6, F7)
+- **Target Files**:
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/data/storage/LocalStorageManager.kt`
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/data/model/UserModels.kt`
+  - `app/src/test/java/com/jovoc/dailyaffirmationwomen/data/storage/LocalStorageManagerTest.kt`
+- **Tasks**:
+  - [x] Define user data classes:
+    - `UserSettings(name: String?, onboardingAnswer: String?, howItWorksSeen: Boolean)`
+    - `UserSentence(id: String, categoryId: String, text: String, createdAt: Long)` (Ensure user sentence IDs begin with `u_`)
+    - `SessionLogEntry(date: String, categoryId: String, sentenceIds: List<String>)` (Date in local `YYYY-MM-DD`, zero user answer text)
+  - [x] Implement `LocalStorageManager` using Android `SharedPreferences`:
+    - Storage keys strictly matching Section 8:
+      - `settings`
+      - `categoryLevel` (map of categoryId -> `GENTLE` | `MEDIUM` | `STRONG`)
+      - `notYetStreak` (map of categoryId -> count)
+      - `favorites` (set/list of sentence IDs)
+      - `userSentences` (JSON array of user sentences with `u_` prefix)
+      - `sessionLog` (JSON array of last 60 entries max, strictly no user text)
+      - `openedCategories` (set of opened category IDs)
+    - Instant in-memory cache preloaded on startup for sub-millisecond access.
+    - Ephemeral answer box text: strictly NOT stored in preferences or anywhere else.
+  - [x] Implement `deleteAllData()`:
+    - Wipes all keys from SharedPreferences.
+    - Resets in-memory cache to default fresh-install state.
+  - [x] Helper methods:
+    - `recordSession(categoryId: String, sentenceIds: List<String>)` (prunes to last 60 entries).
+    - `toggleFavorite(sentenceId: String)`
+    - `saveUserSentence(categoryId: String, text: String)` (validates <= 200 chars).
+    - `deleteUserSentence(sentenceId: String)`
+    - `updateUserSentence(sentenceId: String, text: String)`
+  - [x] Unit test suite (`LocalStorageManagerTest.kt`):
+    - Comprehensive test suite testing serialization/deserialization, 60-item log limit, `u_` prefix generation, 200-char limit validation, and deleteAllData reset.
+- **Code-Level Verification**:
+  - Verify storage keys match Section 8 table exactly.
+  - Verify `u_` prefix for user sentence IDs.
+  - Verify session log enforces 60-item limit and stores zero answer box text.
+
+---
+
+## Part 5: Pure Practice Logic & Suggestion Engine
+- **Source of Truth**: `AGENT_INSTRUCTIONS.md` Section 3.1, 3.2, 4 (F4), 8
+- **Target Files**:
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/domain/SuggestionEngine.kt`
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/domain/SentenceSelector.kt`
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/domain/LevelManager.kt`
+  - `app/src/test/java/com/jovoc/dailyaffirmationwomen/domain/SuggestionEngineTest.kt`
+- **Tasks**:
+  - [x] Implement pure Kotlin function `SuggestionEngine.getSuggestedCategory(...)`:
+    - Inputs: `currentHour: Int`, `todayDateStr: String`, `sessionLog: List<SessionLogEntry>`, `openedCategories: Set<String>`, `categories: List<Category>`, `metaSession: MetaSession`.
+    - Output: Category ID.
+    - Rule 1: First launch ever (empty sessionLog and empty openedCategories) -> return `"kind_to_myself"`.
+    - Rule 2: Night window: if `currentHour` in 21..23 or 0..4 (i.e. between `nightStartHour` and `nightEndHour`) AND no session done today -> return category where `suggestPolicy == NIGHT_ONLY` (`"bedtime_unload"`).
+    - Rule 3: Otherwise, next category in file order after last practiced category:
+      - Skip categories with `suggestPolicy == NIGHT_ONLY`.
+      - Skip `OPT_IN` categories unless present in `openedCategories`.
+      - Skip `LIMITED` categories if practiced or suggested in the last `limitedCategoryMinDaysBetweenSuggestions` (3) days.
+      - Wrap around to beginning if at end of list.
+  - [x] Implement `SentenceSelector.getNextSentence(...)`:
+    - Inputs: `category: Category`, `sessionLog: List<SessionLogEntry>`, `avoidDays: Int` (7).
+    - Pick next built-in affirmation in file order not practiced in last 7 days.
+    - Fallback: oldest practiced affirmation.
+  - [x] Implement `SentenceSelector.formatSentence(rawText: String, userName: String?): FormattedSentence`:
+    - Check if sentence contains `{name}`.
+    - If `userName` is present: replace `{name}` with `userName`.
+    - If `userName` is absent: return `NeedsNamePrompt` state so UI displays name prompt card instead of raw `{name}`.
+  - [x] Implement `LevelManager`:
+    - `onFeelsTrue(currentLevel)`: gentle -> medium -> strong (cap at strong); reset streak to 0.
+    - `onNotYet(currentLevel, currentStreak)`: strong -> medium -> gentle (cap at gentle); increment streak; if streak >= 3 at gentle, flag `showCategoryNoFit`.
+  - [x] Formulate unit tests in `SuggestionEngineTest.kt` covering:
+    - Test 1: First launch -> returns `"kind_to_myself"`.
+    - Test 2: Night hour (22:00) with no session done today -> returns `"bedtime_unload"`.
+    - Test 3: Normal rotation advances to next category in file order.
+    - Test 4: Opt-in category (`midlife_and_beyond`) is skipped unless opened previously.
+    - Test 5: Limited category (`small_good_things`) is skipped if practiced within 3 days.
+- **Code-Level Verification**:
+  - Verify pure Kotlin implementation with no Android framework coupling for suggestion algorithms.
+  - Trace logic step-by-step against Section 3.1 & Section 10 Done Checklist item 16.
+
+---
+
+## Part 6: Fast-Startup App Shell & Navigation Architecture
+- **Source of Truth**: `AGENT_INSTRUCTIONS.md` Section 3.1, 7; User performance directive
+- **Target Files**:
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/MainActivity.kt`
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/ui/navigation/AppNavigation.kt`
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/ui/components/CommonComponents.kt`
+- **Tasks**:
+  - [x] `MainActivity.kt`:
+    - Configure clean entry point with zero artificial delay or splash activity.
+    - Asynchronously trigger dataset loading in coroutine; load local state instantly from SharedPreferences.
+  - [x] `AppNavigation.kt`:
+    - Implement lightweight screen routing using a sealed class `Screen`:
+      - `Home`, `Favorites`, `Settings` (Bottom tabs).
+      - `Onboarding` (full screen, if `!howItWorksSeen`).
+      - `CategoryDetail(categoryId)`.
+      - `Session(categoryId, sentenceId?)` (full-screen modal with small close button).
+      - `SleepTimer(categoryId)`.
+      - `DeepValues(categoryId)`.
+      - `About`.
+  - [x] Build reusable Compose components:
+    - `AffirmationButton`: Tap target >= 48x48 dp, accessible label.
+    - `AffirmationCard`: Calm neutral border and padding.
+    - `CloseButton`: Accessible small close button for sessions.
+    - Simple fade transitions (< 250ms) respecting system reduced motion.
+- **Code-Level Verification**:
+  - Check absence of splash delay; direct launch to Home or Onboarding.
+  - Verify touch targets >= 48dp on all interactive elements.
+
+---
+
+## Part 7: Onboarding Flow (Feature F1)
+- **Source of Truth**: `AGENT_INSTRUCTIONS.md` Section 4 (F1), 5
+- **Target Files**:
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/ui/onboarding/OnboardingScreen.kt`
+- **Tasks**:
+  - [x] Build Onboarding pager/steps (all steps skippable):
+    - **Step 1: Name**: Optional first name input. Stored in `settings.name`.
+    - **Step 2: Starting Level Question**:
+      - Question: `onboarding_question` ("When you read a kind sentence about yourself, what usually happens?")
+      - Options:
+        - `onboarding_opt_believe` ("I believe it") -> Sets starting level to `MEDIUM`.
+        - `onboarding_opt_want` ("I want to believe it") -> Sets starting level to `GENTLE`.
+        - `onboarding_opt_doubt` ("I doubt it") -> Sets starting level to `GENTLE`.
+        - Skip -> Sets starting level to `GENTLE`.
+      - Apply to all categories in `categoryLevel`.
+      - STRICT PROHIBITION: Never display the words "gentle", "medium", or "strong" to the user.
+    - **Step 3: Three "How it works" Cards**:
+      - Card 1: `how_card_1` ("Read it slowly, once or twice. Say it out loud if you can.")
+      - Card 2: `how_card_2` ("Ask yourself if it feels true. \"Not yet\" is a fine answer.")
+      - Card 3: `how_card_3` ("Do the small step under the sentence. That is the whole practice. About 2 minutes.")
+  - [x] On completion or skip: set `howItWorksSeen = true`, navigate immediately to Home.
+- **Code-Level Verification**:
+  - Verify that level names ("gentle", "medium", "strong") are never rendered in the UI.
+  - Verify copy matches Section 5 strings exactly.
+
+---
+
+## Part 8: Home Screen & Today's Practice Card (Feature F2)
+- **Source of Truth**: `AGENT_INSTRUCTIONS.md` Section 3.1, 4 (F2), 5
+- **Target Files**:
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/ui/home/HomeScreen.kt`
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/ui/home/TodaysPracticeCard.kt`
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/ui/home/CategoryRow.kt`
+- **Tasks**:
+  - [x] Implement `TodaysPracticeCard`:
+    - Compute suggested category via `SuggestionEngine.getSuggestedCategory(...)`.
+    - Check if session already completed today (local device date).
+    - If completed today:
+      - Display `done_today` text: "That is enough for today. Come back tomorrow, or open any category."
+      - Do NOT show Start button.
+    - If not completed today:
+      - Display header: `today_card_title` ("Today's practice").
+      - Display suggested category `title` and `when_to_use`.
+      - Display time estimate: `time_sleep` ("About 5 minutes") for `paper_timer`, else `time_standard` ("About 2 minutes").
+      - Display `start_button` ("Start").
+      - Tapping Start immediately launches the session without prompting for category.
+  - [x] Implement Category List:
+    - LazyColumn rendering all 12 categories from JSON in exact file order.
+    - Show `title` and `when_to_use`.
+    - Show `audience` as small subtitle if present.
+    - STRICT PROHIBITION: Do NOT show `evidence`, `mechanism`, `best_time`, `session_mode`, or `suggest_policy`.
+    - Tapping category registers it in `openedCategories` and navigates to `CategoryDetailScreen`.
+- **Code-Level Verification**:
+  - Check that all 12 categories appear in exact file order.
+  - Check `done_today` state when today's session is already logged.
+  - Confirm developer-only fields are completely excluded.
+
+---
+
+## Part 9: Category Screen, Research Notes & Custom Sentences (Features F3, F5)
+- **Source of Truth**: `AGENT_INSTRUCTIONS.md` Section 3.3, 4 (F3, F5), 5
+- **Target Files**:
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/ui/category/CategoryScreen.kt`
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/ui/category/ResearchNoteBlock.kt`
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/ui/category/AddCustomSentenceDialog.kt`
+  - `app/src/test/java/com/jovoc/dailyaffirmationwomen/ui/category/CategoryRulesTest.kt`
+- **Tasks**:
+  - [x] Header: Display `title`, `when_to_use`, and "Start practice" button (starts session with next sentence).
+  - [x] Research Note Block:
+    - Collapsible section labeled "What research found" (`what_research_found`).
+    - Rendered only if `research_note_id` != null.
+    - Display `claim_ui`, `population`, and `source` as "Source: [source]".
+    - STRICT PROHIBITION: Never display `do_not_say`, `extra_fact`, or `source_check`.
+  - [x] Sentence List:
+    - Built-in sentences rendered at current category level with `prompt` in 14-16sp.
+    - Heart icon toggles favorite state.
+    - Tapping built-in card launches session on that specific sentence.
+    - `{name}` rule: If sentence contains `{name}`:
+      - If name set: substitute `{name}`.
+      - If name not set: show prompt card asking to set name with button linking to Settings; do not display raw `{name}`.
+    - User's own sentences listed below, marked with "Mine" badge, with edit and delete options.
+    - Tapping "Mine" card launches own-sentence session (Screen A -> Screen D).
+  - [x] Add Custom Sentence:
+    - Button: `add_my_own_sentence` ("Add my own sentence").
+    - Input dialog with hint `user_added_sentence_hint` ("Write something you can believe today.").
+    - 200 character maximum limit enforced.
+    - Stored locally with `u_` prefix.
+  - [x] Deep Values option for `my_values`:
+    - Secondary button `deep_values_button` ("Take 10 minutes (optional)").
+- **Code-Level Verification**:
+  - Verify collapsible research note displays only allowed fields.
+  - Verify `{name}` handling shows card when name is missing.
+  - Confirm 200 character limit on custom sentences and `u_` ID format.
+
+---
+
+## Part 10: Standard Guided Practice Session & Level Adaptation (Feature F4, Section 3.2)
+- **Source of Truth**: `AGENT_INSTRUCTIONS.md` Section 3.2, 4 (F4), 5, 6
+- **Target Files**:
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/ui/session/SessionScreen.kt`
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/ui/session/ScreenARead.kt`
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/ui/session/ScreenBCheck.kt`
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/ui/session/ScreenCDo.kt`
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/ui/session/ScreenDClose.kt`
+- **Tasks**:
+  - [x] Container: Full screen with small accessible close button. Simple fade transitions (< 250ms).
+  - [x] **Screen A (Read, ~20s)**:
+    - Display affirmation at current level in 20-24sp font.
+    - Instruction: `read_instruction` ("Read it slowly, once. Say it out loud if you can.") or `read_instruction_say_aloud` ("Say it out loud, once, just before you begin.") for `say_aloud` mode.
+    - Button: "Next". Never force a delay.
+    - Zero repeat counters or loops.
+  - [x] **Screen B (Check, ~5s)**:
+    - Question: `check_question` ("Does it feel true right now?").
+    - Two buttons: `check_true` ("Feels true") and `check_not_yet` ("Not yet").
+    - `check_true`: move category up one level (gentle -> medium -> strong). Reset streak to 0. Go to Screen C.
+    - `check_not_yet`: move category down one level (strong -> medium -> gentle). Increment streak. Show `not_yet_message` ("That is okay. Think of one time it was true for you, and one time it was not."). If streak reaches 3 at gentle, show `category_no_fit` ("This category may not fit you right now. You can try another one, or skip it for a while.") once. Go to Screen C.
+  - [x] **Screen C (Do, ~60-90s)**:
+    - Header: `do_header` ("One small step") and affirmation `prompt`.
+    - Ephemeral answer box with `answer_box_hint` ("Write a line (optional). It will not be saved.").
+    - Link: `think_instead` ("I will think about it").
+    - Hint: `do_time_hint` ("Take about a minute."). NO countdown timer.
+    - Button: "Next" to Screen D.
+  - [x] **Screen D (Close, ~10s)**:
+    - Message: `close_message` ("That is enough for now.").
+    - Buttons: Heart (favorite), `done_button` ("Done"), and `another_sentence` ("Another sentence").
+    - `another_sentence` visibility: show ONLY if sentences done in this session < `maxSentencesPerSession` (3). After 3, show only "Done".
+    - Tapping `another_sentence`: select next sentence (not practiced in last 7 days) and loop to Screen A.
+    - On "Done" or close: record entry in `sessionLog` ({ date, categoryId, sentenceIds }), clear ephemeral answer text, return to caller.
+    - Zero streaks, zero scores, zero badges, zero confetti.
+- **Code-Level Verification**:
+  - Verify Screen A -> B -> C -> D flow and level adjustments.
+  - Confirm `another_sentence` disappears after 3 sentences.
+  - Confirm answer box text is held purely in ephemeral memory and discarded on session close.
+
+---
+
+## Part 11: Special Practice Modes (Section 3.3)
+- **Source of Truth**: `AGENT_INSTRUCTIONS.md` Section 3.3, 5
+- **Target Files**:
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/ui/session/SleepTimerScreen.kt`
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/ui/session/DeepValuesScreen.kt`
+- **Tasks**:
+  - [x] **Sleep Timer (`bedtime_unload` / `paper_timer`)**:
+    - Run Screens A and B as normal.
+    - Screen C becomes: `sleep_instruction` ("Put your phone down. Write on paper for five minutes. Be specific."), button `sleep_start` ("Start five minutes").
+    - Tapping start switches to a dim dark screen with remaining time (`session_seconds` = 300 / 5 minutes). Always dark theme.
+    - When time expires: trigger single haptic vibration (`Vibrator` / `VibrationEffect`), display `sleep_end` ("Time is up. Good night.").
+    - PROHIBITIONS: NO sound, NO answer box, NO further sentences (no Screen D).
+  - [x] **Deep Values Option (`my_values`)**:
+    - Plain screen with `deep_values_text` ("Pick one value. Write about it for ten minutes: why it matters to you, and one time it guided you.").
+    - Ephemeral answer box (never saved).
+    - NO countdown timer.
+    - End message: `deep_values_end` ("You do not need to repeat this often.").
+  - [x] **User's Own Sentence Session**:
+    - Screen A (Read) -> directly to Screen D (Close). Bypasses Check, Do, and level adaptation.
+- **Code-Level Verification**:
+  - Verify sleep timer uses native vibration, produces zero sound, and skips Screen D.
+  - Check deep values screen has no timer and displays exact text.
+  - Verify custom sentence session only shows A and D.
+
+---
+
+## Part 12: Favorites Screen (Feature F6)
+- **Source of Truth**: `AGENT_INSTRUCTIONS.md` Section 4 (F6), 7
+- **Target Files**:
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/ui/favorites/FavoritesScreen.kt`
+  - `app/src/test/java/com/jovoc/dailyaffirmationwomen/ui/favorites/FavoritesRulesTest.kt`
+- **Tasks**:
+  - [x] Tab screen displaying all favorited built-in sentences and user sentences.
+  - [x] Render sentences at current category level.
+  - [x] Heart icon toggles favorite state.
+  - [x] Empty state: exact text `favorites_empty` ("No saved sentences yet.").
+  - [x] Tapping a sentence allows opening it in session practice.
+- **Code-Level Verification**:
+  - Verify empty state string matches Section 7.
+  - Verify both built-in and user sentences render properly.
+
+---
+
+## Part 13: Settings & About Screens (Feature F7)
+- **Source of Truth**: `AGENT_INSTRUCTIONS.md` Section 3.4, 4 (F7), 5
+- **Target Files**:
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/ui/settings/SettingsScreen.kt`
+  - `app/src/main/java/com/jovoc/dailyaffirmationwomen/ui/settings/AboutScreen.kt`
+- **Tasks**:
+  - [x] Name Editor: Edit first name, saved to `settings.name`, immediately updating `{name}` affirmation cards.
+  - [x] Six Reading Rules (Section 3.4):
+    - 1: `how_card_1` ("Read it slowly, once or twice. Say it out loud if you can.")
+    - 2: `how_card_2` ("Ask yourself if it feels true. \"Not yet\" is a fine answer.")
+    - 3: `rule_3` ("If it does not feel true, think of a time it was true and a time it was not.")
+    - 4: `rule_4` ("Do the small step under the sentence. It matters more than the sentence.")
+    - 5: `rule_5` ("Stop after one to three sentences. One session a day is enough.")
+    - 6: `rule_6` ("If something makes you feel worse, stop. Try another category or take a break.")
+  - [x] Delete all my data:
+    - Button with confirmation dialog.
+    - Completely wipes SharedPreferences and resets state.
+  - [x] About Screen:
+    - Verbatim disclaimer: `about_disclaimer` ("This app is for everyday well-being. It is not medical care or therapy. If you are in distress, please contact a local health professional or emergency services.").
+    - Include `// TODO(developer): developer will add external helpline numbers and links` comment.
+    - STRICT PROHIBITION: Do not add arbitrary phone numbers or website links.
+- **Code-Level Verification**:
+  - Verify About screen text character-by-character.
+  - Verify "Delete all my data" clears all storage keys.
+  - Verify six reading rules use exact copy.
+
+---
+
+## Part 14: Quality Audit, Checklist & Section 6 Avoid List Compliance
+- **Source of Truth**: `AGENT_INSTRUCTIONS.md` Section 6, Section 10
+- **Target Files**:
+  - `app/src/test/java/com/jovoc/dailyaffirmationwomen/audit/QualityAndComplianceAuditTest.kt`
+- **Tasks**:
+  - [x] Audit against Section 6 Avoid List:
+    - [x] No sample data, placeholders, or lorem ipsum. All sentences from JSON.
+    - [x] No paraphrased research notes; only `claim_ui`, `population`, `source`.
+    - [x] Zero usage of forbidden words in visible UI: `proven`, `guaranteed`, `cure`, `treat`, `heal`, `therapy`, `clinically`.
+    - [x] Zero streaks, badges, points, progress bars, or "You missed a day" messages.
+    - [x] Zero repeat counters or loops.
+    - [x] Answer box text is strictly non-persistent and never logged.
+    - [x] Sleep timer produces zero sound.
+    - [x] Max sentences per session capped at 3 (`max_sentences_per_session`).
+    - [x] No user accounts, login, backend, or cloud sync.
+    - [x] Zero AI API calls.
+    - [x] Zero unneeded permissions requested.
+    - [x] No stock photos of women, faces, or bodies.
+    - [x] No red error styles on cards; calm neutral styling used.
+    - [x] No raw `{name}` placeholder displayed.
+    - [x] No user text leaves the device.
+  - [x] Audit against Section 10 Done Checklist (17 items):
+    - [x] 1. App opens straight to Home with Today's practice card and 12 categories.
+    - [x] 2. First launch ever suggests "Kind to myself".
+    - [x] 3. 22:00 with no session done today suggests "Before sleep".
+    - [x] 4. Finished session today shows `done_today` text and no Start button.
+    - [x] 5. Standard session shows A, B, C, D in order; "Another sentence" disappears after 3.
+    - [x] 6. "Feels true" moves gentle -> medium. "Not yet" moves back and shows not-yet message.
+    - [x] 7. Three "Not yet" in a row at gentle shows `category_no_fit` text once.
+    - [x] 8. Answer box text is cleared after session and app restart.
+    - [x] 9. "Before sleep" shows dim 5-min timer, vibrates once, no sound, no further sentences.
+    - [x] 10. "Before something big" shows say-aloud instruction.
+    - [x] 11. "Talking to myself by name" prompts for name when unset, shows name when set.
+    - [x] 12. Adding, editing, deleting user sentences works and survives restart.
+    - [x] 13. Favorites survive restart.
+    - [x] 14. "Delete all my data" clears everything local.
+    - [x] 15. Offline-first: works without network.
+    - [x] 16. Suggestion function has unit test specifications for first launch, night, rotation, opt-in, limited.
+    - [x] 17. No visible text contains words in the avoid list.
